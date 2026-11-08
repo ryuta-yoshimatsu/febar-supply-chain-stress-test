@@ -1,0 +1,5 @@
+resources:
+  database_instances:
+    febar_db:
+      name: ${var.lakebase_instance}
+      capacity: CU_1

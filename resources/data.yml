@@ -1,0 +1,14 @@
+resources:
+  pipelines:
+    northbay_network:
+      name: northbay-network-pipeline
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      channel: CURRENT
+      photon: true
+      libraries:
+        - file:
+            path: ../src/pipeline/northbay_network.sql
+      configuration:
+        raw_root: /Volumes/${var.catalog}/${var.schema}/raw_landing

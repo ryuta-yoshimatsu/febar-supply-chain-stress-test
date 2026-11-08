@@ -1,0 +1,12 @@
+command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+env:
+  - name: NB_CATALOG
+    value: classic_stable_z57t9z_catalog
+  - name: NB_SCHEMA
+    value: febar_supply_chain
+  - name: NB_LAKEBASE_INSTANCE
+    value: febar-supply-chain-db
+  - name: NB_LAKEBASE_DATABASE
+    value: databricks_postgres
+  - name: NB_LLM_ENDPOINT
+    value: databricks-claude-sonnet-5-5

@@ -1,0 +1,33 @@
+bundle:
+  name: febar-supply-chain-stress-test
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog for the data product
+    default: classic_stable_z57t9z_catalog
+  schema:
+    description: Schema for raw volume, bronze/silver/gold tables and the registered agent
+    default: febar_supply_chain
+  warehouse_id:
+    description: SQL warehouse used by Genie
+    default: 93d900a9c827e64c
+  lakebase_instance:
+    default: febar-supply-chain-db
+  serving_schema:
+    description: UC schema holding the Lakebase synced tables (also the Postgres schema name)
+    default: northbay_serving
+  lakebase_database:
+    default: databricks_postgres
+  app_name:
+    default: northbay-resilience
+  llm_endpoint:
+    default: databricks-claude-sonnet-5-5
+
+targets:
+  dev:
+    default: true
+    workspace:
+      host: https://adb-7405610715852579.19.azuredatabricks.net

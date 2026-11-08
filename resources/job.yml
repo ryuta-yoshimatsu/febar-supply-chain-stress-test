@@ -1,0 +1,36 @@
+resources:
+  jobs:
+    northbay_end_to_end:
+      name: northbay-end-to-end
+      description: Raw extracts -> Lakeflow -> stress test -> governance -> Lakebase -> Genie -> agent evaluation
+      parameters:
+        - {name: catalog, default: "${var.catalog}"}
+        - {name: schema, default: "${var.schema}"}
+        - {name: app_name, default: "${var.app_name}"}
+        - {name: warehouse_id, default: "${var.warehouse_id}"}
+        - {name: lakebase_instance, default: "${var.lakebase_instance}"}
+        - {name: serving_schema, default: "${var.serving_schema}"}
+        - {name: lakebase_database, default: "${var.lakebase_database}"}
+      tasks:
+        - task_key: land_raw_extracts
+          notebook_task: {notebook_path: ../src/notebooks/01_generate_raw_data.py}
+        - task_key: lakeflow_ingest
+          depends_on: [{task_key: land_raw_extracts}]
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.northbay_network.id}
+            full_refresh: true
+        - task_key: stress_test
+          depends_on: [{task_key: lakeflow_ingest}]
+          notebook_task: {notebook_path: ../src/notebooks/02_stress_test.py}
+        - task_key: governance
+          depends_on: [{task_key: stress_test}]
+          notebook_task: {notebook_path: ../src/notebooks/03_governance.py}
+        - task_key: lakebase_serving
+          depends_on: [{task_key: governance}]
+          notebook_task: {notebook_path: ../src/notebooks/04_lakebase_serving.py}
+        - task_key: genie_space
+          depends_on: [{task_key: lakebase_serving}]
+          notebook_task: {notebook_path: ../src/notebooks/05_genie_space.py}
+        - task_key: agent_evaluate_register
+          depends_on: [{task_key: genie_space}]
+          notebook_task: {notebook_path: ../src/notebooks/06_agent_evaluate_register.py}

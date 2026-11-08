@@ -1,0 +1,333 @@
+<!doctype html><html><head><meta charset='utf-8'><style>
+@page { size: 13.333in 7.5in; margin: 0; }
+body { margin: 0; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; color: #0b0b0b; }
+.slide { width: 13.333in; height: 7.5in; box-sizing: border-box; padding: 0.55in 0.75in; page-break-after: always;
+         position: relative; overflow: hidden; background: #fcfcfb; }
+.slide::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0.14in; background: #2a78d6; }
+.slide.title { background: #0f2a4a; color: #fff; display: flex; flex-direction: column; justify-content: center; }
+.slide.title::before { background: #eb6834; }
+.slide.title h1 { font-size: 56px; line-height: 1.15; max-width: 10.5in; margin: 0 0 18px; }
+.slide.title p { font-size: 24px; color: #d6e4f5; margin: 6px 0; }
+h2 { font-size: 40px; margin: 0 0 22px; color: #0f2a4a; }
+p, li { font-size: 25px; line-height: 1.45; }
+li { margin: 4px 0; } ul ul li, ol ul li { font-size: 22px; }
+table { border-collapse: collapse; width: 100%; font-size: 20px; margin: 6px 0 14px; }
+th { text-align: left; background: #eef3fa; color: #52514e; padding: 8px 10px; border-bottom: 2px solid #c9d6e8; }
+td { padding: 8px 10px; border-bottom: 1px solid #e3e2de; vertical-align: top; }
+strong { color: #0f2a4a; } .slide.title strong { color: #fff; }
+.footer { position: absolute; bottom: 0.25in; right: 0.6in; font-size: 12px; color: #77756f; }
+</style></head><body><section class="slide title"><h1
+id="protecting-115m-of-gross-margin-from-supplier-disruption">Protecting
+$11.5M of gross margin from supplier disruption</h1>
+<p><strong>NorthBay Resilience</strong>: supply network stress testing
+for NorthBay Foods</p>
+<p>For: Dana (VP Supply Chain) · Procurement leadership · Supply Chain
+Analytics</p>
+<p>Databricks · November 2026</p>
+</section><section class="slide"><h2 id="executive-summary">Executive summary</h2>
+<ul>
+<li><strong>$11.5M of gross margin (15% of the year) and $39.8M of
+revenue</strong> are exposed to single-supplier disruptions.</li>
+<li><strong>71% of the exposure sits with three suppliers</strong>:
+Midwest Sweeteners, Kerala Spice Traders, FlavorCraft Blends.</li>
+<li><strong>Two moves cut margin at risk by 68%, to $3.7M:</strong>
+<ol type="1">
+<li>Qualify GulfCane Syrups as a second sweetener source for cereal and
+granola bars.</li>
+<li>Hold a 6-week seasoning buffer for Kettle Chips.</li>
+</ol></li>
+<li><strong>≈ $0.8M/yr expected margin protected for ≈ $150k one-off +
+$36k/yr, so payback is under 3 months.</strong></li>
+<li>Planners now answer multi-tier "what-ifs" in <strong>~30 seconds
+instead of 1–2 weeks</strong>.</li>
+</ul>
+<p><strong>Ask:</strong> a 6-week pilot on NorthBay's real ERP / SRM
+data.</p>
+<div class="footer">NorthBay Resilience · 2/11</div></section><section class="slide"><h2 id="the-problem-disruptions-are-a-surprise-and-so-is-their-cost">The
+problem: disruptions are a surprise, and so is their cost</h2>
+<ul>
+<li>Illustrative history: a refinery explosion, a seasoning-line fire
+and a Gulf hurricane each forced emergency re-planning.</li>
+<li>Nobody could answer <strong>before</strong> the event:
+<ul>
+<li>Which suppliers can we not live without, and for how long?</li>
+<li>How much margin does each disruption cost after our best
+response?</li>
+<li>Which mitigation is worth paying for: second source, buffer stock,
+or nothing?</li>
+</ul></li>
+<li>Today's answer is a 1–2 week spreadsheet exercise across ERP, SRM,
+WMS and planning data, so it arrives after the money is gone.</li>
+</ul>
+<div class="footer">NorthBay Resilience · 3/11</div></section><section class="slide"><h2 id="where-northbay-is-exposed">Where NorthBay is exposed</h2>
+<p>Each supplier is down for its typical recovery time, and the network
+is re-planned optimally.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">#</th>
+<th>Supplier</th>
+<th>Typical disruption</th>
+<th style="text-align: right;">Down</th>
+<th style="text-align: right;">We cope for</th>
+<th style="text-align: right;">Gross margin lost</th>
+<th>Products hit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Midwest Sweeteners</td>
+<td>Refinery explosion</td>
+<td style="text-align: right;">9 wk</td>
+<td style="text-align: right;">3.6 wk</td>
+<td style="text-align: right;"><strong>$2.99M</strong></td>
+<td>Morning Oats Cereal, Trail Granola Bar</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Kerala Spice Traders</td>
+<td>Monsoon flooding</td>
+<td style="text-align: right;">12 wk</td>
+<td style="text-align: right;">5.3 wk</td>
+<td style="text-align: right;"><strong>$2.76M</strong></td>
+<td>Kettle Chips</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>FlavorCraft Blends</td>
+<td>Blending-line fire</td>
+<td style="text-align: right;">10 wk</td>
+<td style="text-align: right;">3.8 wk</td>
+<td style="text-align: right;"><strong>$2.42M</strong></td>
+<td>Kettle Chips</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>BarrierFilm Co.</td>
+<td>Labor strike</td>
+<td style="text-align: right;">7 wk</td>
+<td style="text-align: right;">4.3 wk</td>
+<td style="text-align: right;">$0.68M</td>
+<td>Trail Granola Bar</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Citrus Essence Labs</td>
+<td>Citrus crop loss</td>
+<td style="text-align: right;">7 wk</td>
+<td style="text-align: right;">5.6 wk</td>
+<td style="text-align: right;">$0.55M</td>
+<td>Kettle Chips</td>
+</tr>
+</tbody>
+</table>
+<p><strong>11 of 24 suppliers</strong> cause unavoidable loss.
+<strong>All 5 plants</strong> have at least one single-sourced input (11
+in total).</p>
+<div class="footer">NorthBay Resilience · 4/11</div></section><section class="slide"><h2
+id="multi-supplier-events-the-risk-team-worries-about">Multi-supplier
+events the risk team worries about</h2>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Suppliers down</th>
+<th style="text-align: right;">Duration</th>
+<th style="text-align: right;">Gross margin lost</th>
+<th>Products hit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wisconsin film converters shut down</td>
+<td>FlexiWrap, BarrierFilm</td>
+<td style="text-align: right;">5 wk</td>
+<td style="text-align: right;"><strong>$1.93M</strong></td>
+<td>Chips, Cereal, Granola Bar</td>
+</tr>
+<tr>
+<td>Midwest drought hits corn sweetener</td>
+<td>Iowa &amp; Illinois corn</td>
+<td style="text-align: right;">9 wk</td>
+<td style="text-align: right;"><strong>$1.69M</strong></td>
+<td>Morning Oats Cereal</td>
+</tr>
+<tr>
+<td>North American PET resin shortage</td>
+<td>Gulf Coast, Monterrey resin</td>
+<td style="text-align: right;">6 wk</td>
+<td style="text-align: right;">$0.61M</td>
+<td>Fizz Cola</td>
+</tr>
+<tr>
+<td>Gulf Coast hurricane</td>
+<td>GulfCane, Gulf Coast Resins, Bayou Sugar</td>
+<td style="text-align: right;">8 wk</td>
+<td style="text-align: right;">$0.56M</td>
+<td>SunValley Orange Drink</td>
+</tr>
+</tbody>
+</table>
+<p>Any combination can be asked in the app in plain English, e.g.
+<em>"what if both film converters go down for 5 weeks?"</em></p>
+<div class="footer">NorthBay Resilience · 5/11</div></section><section class="slide"><h2 id="what-it-is-worth-to-fix">What it is worth to fix</h2>
+<p>The full portfolio is re-run for each option.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th style="text-align: right;">Margin at risk</th>
+<th style="text-align: right;">Reduction</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Today</td>
+<td style="text-align: right;">$11.49M</td>
+<td style="text-align: right;">–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>A. Second sweetener source (GulfCane → cereal, bars)</td>
+<td style="text-align: right;">$8.86M</td>
+<td style="text-align: right;">23%</td>
+<td>≈ $150k qualification</td>
+</tr>
+<tr>
+<td>B. 6-week seasoning buffer at FlavorCraft</td>
+<td style="text-align: right;">$6.33M</td>
+<td style="text-align: right;">45%</td>
+<td>≈ $144k inventory, $36k/yr carrying</td>
+</tr>
+<tr>
+<td>C. Second seasoning source (SpiceWorks → chips)</td>
+<td style="text-align: right;">$11.36M</td>
+<td style="text-align: right;"><strong>1%</strong></td>
+<td>≈ $150k: <em>not worth it</em></td>
+</tr>
+<tr>
+<td><strong>A + B: recommended</strong></td>
+<td style="text-align: right;"><strong>$3.70M</strong></td>
+<td style="text-align: right;"><strong>68%</strong></td>
+<td><strong>≈ $150k one-off + $36k/yr</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The intuitive option C fails because SpiceWorks has no spare
+capacity. The optimizer sees it; a spreadsheet does not.</p>
+<div class="footer">NorthBay Resilience · 6/11</div></section><section class="slide"><h2 id="value-for-each-stakeholder">Value for each stakeholder</h2>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>What changes</th>
+<th>KPI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VP Supply Chain</strong> (sponsor)</td>
+<td>Margin at risk becomes a managed number reviewed monthly</td>
+<td>$11.5M → <strong>$3.7M</strong> margin at risk; largest single
+exposure $2.99M → $0.68M</td>
+</tr>
+<tr>
+<td><strong>Procurement</strong> (owner)</td>
+<td>A ranked, costed list of dual-sourcing and buffer decisions</td>
+<td>Single-sourced inputs 11 → 9; next wave: packaging film &amp;
+cartons</td>
+</tr>
+<tr>
+<td><strong>Supply planners</strong></td>
+<td>Answer "what if X is down N weeks?" in the S&amp;OP meeting</td>
+<td>1–2 weeks → <strong>~30 seconds</strong></td>
+</tr>
+<tr>
+<td><strong>Finance</strong></td>
+<td>Expected-loss view for risk reserves and insurance</td>
+<td>≈ <strong>$0.8M/yr</strong> expected margin protected, payback &lt;
+3 months</td>
+</tr>
+</tbody>
+</table>
+<div class="footer">NorthBay Resilience · 7/11</div></section><section class="slide"><h2 id="how-it-works">How it works</h2>
+<ol type="1">
+<li><strong>Ingest</strong> ERP, SRM, PLM, WMS and APS data continuously
+(Lakeflow), with automatic data-quality checks.</li>
+<li><strong>Govern</strong> one trusted network model with lineage and
+access control (Unity Catalog).</li>
+<li><strong>Stress-test</strong> every supplier with an optimization
+model that re-plans the whole network (Databricks jobs).</li>
+<li><strong>Serve</strong> results and the live network to the app in
+milliseconds (Lakebase).</li>
+<li><strong>Ask</strong> questions in plain English: Genie answers data
+questions, and the AI agent runs what-ifs on the optimizer.</li>
+<li><strong>Act</strong> in one business app: risk overview, AI
+assistant, and an audit log of every scenario.</li>
+</ol>
+<div class="footer">NorthBay Resilience · 8/11</div></section><section class="slide"><h2 id="why-you-can-trust-the-answers">Why you can trust the
+answers</h2>
+<ul>
+<li><strong>Numbers come from math, not the AI.</strong> The optimizer
+computes every impact figure, and the AI explains it and proposes
+actions.</li>
+<li><strong>Same question, same answer.</strong> The optimization is
+deterministic and every scenario is logged.</li>
+<li><strong>Clean data in.</strong> Duplicate supplier records, negative
+inventory scans and links to unknown suppliers are caught and
+counted.</li>
+<li><strong>Governed end to end.</strong> Lineage runs from source files
+to the app. The app sees only the curated gold data.</li>
+<li><strong>Evaluated.</strong> 8-question test set: correct tool choice
+8/8, safety 8/8, actionable advice 8/8, and off-topic questions
+declined.</li>
+</ul>
+<div class="footer">NorthBay Resilience · 9/11</div></section><section class="slide"><h2 id="pilot-plan-6-weeks">Pilot plan: 6 weeks</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Milestone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–2</td>
+<td>Connect SAP (plants, BOM, inventory) and the supplier portal with
+Lakeflow Connect; validate the network model with planners</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Calibrate recovery times with procurement; run the portfolio stress
+test on real data</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Procurement reviews the top-10 exposures and costs the mitigation
+options</td>
+</tr>
+<tr>
+<td>5–6</td>
+<td>Planners use the app in two S&amp;OP cycles; success review</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Success criteria:</strong> the top-3 exposures match
+planners' intuition or surprise them with a defensible reason; at least
+one mitigation decision is taken on the numbers; the what-if answer is
+under 1 minute.</p>
+<div class="footer">NorthBay Resilience · 10/11</div></section><section class="slide"><h2 id="appendix-assumptions">Appendix: assumptions</h2>
+<ul>
+<li>Data is synthetic for NorthBay Foods (fictional); structure and
+economics are realistic for a mid-size US CPG company.</li>
+<li>Gross margin at risk = the sum over single-supplier disruptions at
+each supplier's typical recovery time (not simultaneous).</li>
+<li>Expected value: a 10% annual probability of each supplier's typical
+disruption (≈ 2–3 material events per year across 24 suppliers).</li>
+<li>Costs: supplier qualification ≈ $150k; seasoning at $0.40 per
+case-equivalent; 25% inventory carrying cost.</li>
+<li>Planner time: ~25 what-if analyses per year × 40 hours saved.</li>
+</ul>
+<div class="footer">NorthBay Resilience · 11/11</div></section></body></html>

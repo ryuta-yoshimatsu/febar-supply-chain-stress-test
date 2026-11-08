@@ -1,0 +1,20 @@
+resources:
+  apps:
+    northbay_resilience:
+      name: ${var.app_name}
+      description: NorthBay Foods supply network resilience - risk overview, AI agent and what-if scenarios
+      source_code_path: ../app
+      resources:
+        - name: llm
+          serving_endpoint:
+            name: ${var.llm_endpoint}
+            permission: CAN_QUERY
+        - name: lakebase
+          database:
+            instance_name: ${resources.database_instances.febar_db.name}
+            database_name: ${var.lakebase_database}
+            permission: CAN_CONNECT_AND_CREATE
+        - name: warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NorthBay Resilience</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-0: #f4f4f2; --surface-1: #fcfcfb; --border: #e3e2de;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #77756f;
+    --accent: #2a78d6; --accent-soft: #e8f1fc; --critical: #c62f2e; --good: #0d7a3a;
+    --series-1: #2a78d6; --track: #e8f1fc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --surface-0: #121211; --surface-1: #1a1a19; --border: #33322f;
+      --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #96958c;
+      --accent: #3987e5; --accent-soft: #1d2b3d; --critical: #e66767; --good: #4cc27c;
+      --series-1: #3987e5; --track: #22303f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--surface-0);
+         color: var(--text-primary); }
+  header { display: flex; align-items: center; gap: 24px; padding: 14px 28px; background: var(--surface-1);
+           border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0; font-size: 17px; }
+  header .sub { color: var(--text-secondary); font-size: 13px; }
+  nav { margin-left: auto; display: flex; gap: 4px; }
+  nav button { border: 0; background: none; padding: 8px 14px; border-radius: 6px; font: inherit; font-size: 14px;
+               color: var(--text-secondary); cursor: pointer; }
+  nav button.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 28px 40px; }
+  section { display: none; } section.active { display: block; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .hero-row { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+  .tile .label { font-size: 13px; color: var(--text-secondary); }
+  .tile .value { font-size: 26px; font-weight: 600; margin-top: 6px; }
+  .tile.hero .value { font-size: 48px; line-height: 1.05; }
+  .tile .note { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+  .grid2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; margin-bottom: 18px; }
+  h2 { font-size: 15px; margin: 0 0 4px; } .caption { font-size: 12px; color: var(--text-muted); margin: 0 0 14px; }
+  /* bar chart: one series, thin bars, 4px rounded data-end, 2px gap */
+  .bars { display: flex; flex-direction: column; gap: 2px; position: relative; }
+  .bar-row { display: grid; grid-template-columns: 190px 1fr; align-items: center; gap: 10px; padding: 3px 0;
+             border-radius: 4px; cursor: default; }
+  .bar-row:hover { background: var(--accent-soft); }
+  .bar-label { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { position: relative; height: 16px; }
+  .bar-fill { height: 16px; background: var(--series-1); border-radius: 0 4px 4px 0; }
+  .bar-value { position: absolute; top: -1px; font-size: 12px; color: var(--text-primary); padding-left: 6px;
+               font-variant-numeric: tabular-nums; }
+  .tooltip { position: fixed; pointer-events: none; background: var(--surface-1); border: 1px solid var(--border);
+             border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12);
+             display: none; max-width: 320px; z-index: 10; color: var(--text-primary); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: var(--text-secondary); font-weight: 600; border-bottom: 1px solid var(--border); padding: 7px 8px; }
+  td { border-bottom: 1px solid var(--border); padding: 7px 8px; vertical-align: top; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pill { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 1px 8px; border-radius: 10px; }
+  .pill.critical { color: var(--critical); border: 1px solid var(--critical); }
+  .pill.good { color: var(--good); border: 1px solid var(--good); }
+  /* chat */
+  #chat { min-height: 52vh; max-height: 64vh; overflow-y: auto; padding: 4px 2px; }
+  .msg { margin: 0 0 14px; padding: 12px 16px; border-radius: 10px; line-height: 1.5; background: var(--surface-1);
+         border: 1px solid var(--border); font-size: 14px; }
+  .msg.user { background: var(--accent-soft); margin-left: 18%; }
+  .msg table { margin: 8px 0; } .msg td, .msg th { border: 1px solid var(--border); padding: 4px 8px; }
+  .status { color: var(--text-muted); font-style: italic; font-size: 13px; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .examples button { background: var(--surface-1); border: 1px solid var(--border); border-radius: 16px; padding: 6px 12px;
+                     cursor: pointer; font: inherit; font-size: 13px; color: var(--text-primary); text-align: left; }
+  form { display: flex; gap: 8px; margin-top: 12px; }
+  textarea { flex: 1; resize: none; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font: inherit;
+             background: var(--surface-1); color: var(--text-primary); }
+  form button { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 0 20px; font-weight: 600; cursor: pointer; }
+  form button:disabled { opacity: .5; cursor: default; }
+  .muted { color: var(--text-muted); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>NorthBay Resilience</h1>
+    <div class="sub">Supply network stress test · NorthBay Foods snacks &amp; beverages</div>
+  </div>
+  <nav>
+    <button data-tab="overview" class="active">Risk overview</button>
+    <button data-tab="agent">Ask the agent</button>
+    <button data-tab="log">Scenario log</button>
+  </nav>
+</header>
+<div class="tooltip" id="tooltip" role="tooltip"></div>
+<main>
+  <section id="overview" class="active">
+    <div class="hero-row" id="kpis"><div class="card tile hero"><div class="label">Loading…</div></div></div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Gross margin at risk by supplier</h2>
+        <p class="caption">Unavoidable loss if the supplier is down for its expected recovery time, after optimal re-planning of the whole network. Top 10 of all suppliers.</p>
+        <div class="bars" id="bars"></div>
+      </div>
+      <div class="card">
+        <h2>Named disruption scenarios</h2>
+        <p class="caption">Multi-supplier events curated by the risk team.</p>
+        <table id="named"></table>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:18px">
+      <h2>Supplier risk ranking</h2>
+      <p class="caption">TTR = time to recover, TTS = time to survive. Exposed when TTS &lt; TTR.</p>
+      <table id="ranking"></table>
+    </div>
+    <div class="card">
+      <h2>Single-sourced inputs to finished goods</h2>
+      <p class="caption">Single points of failure: one approved supplier for a material a plant needs.</p>
+      <table id="single"></table>
+    </div>
+  </section>
+
+  <section id="agent">
+    <div class="card">
+      <div class="examples" id="examples"></div>
+      <div id="chat"></div>
+      <form id="form">
+        <textarea id="input" rows="2" placeholder="e.g. Midwest Sweeteners is down for 9 weeks. What happens and what should we do?"></textarea>
+        <button id="send" type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="log">
+    <div class="card">
+      <h2>What-if scenario log</h2>
+      <p class="caption">Every what-if the agent runs is written to Lakebase (app_state.scenario_runs).</p>
+      <table id="scenarios"></table>
+    </div>
+  </section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const usd = v => v >= 1e6 ? `$${(v/1e6).toFixed(1)}M` : v >= 1e3 ? `$${(v/1e3).toFixed(0)}K` : `$${Math.round(v)}`;
+const wk = v => v == null ? "–" : v >= 52 ? "52+ wk" : `${(+v).toFixed(1)} wk`;
+
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav button").forEach(x => x.classList.toggle("active", x === b));
+  document.querySelectorAll("section").forEach(s => s.classList.toggle("active", s.id === b.dataset.tab));
+  if (b.dataset.tab === "log") loadScenarios();
+});
+
+const tip = $("tooltip");
+function showTip(e, html) { tip.innerHTML = html; tip.style.display = "block";
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - 340) + "px"; tip.style.top = (e.clientY + 14) + "px"; }
+function hideTip() { tip.style.display = "none"; }
+
+async function loadOverview() {
+  const d = await (await fetch("api/overview")).json();
+  const k = d.kpis;
+  $("kpis").innerHTML = `
+    <div class="card tile hero"><div class="label">Gross margin at risk</div><div class="value">${usd(k.margin_at_risk_usd)}</div>
+      <div class="note">sum over single-supplier disruptions · ${(100 * k.margin_at_risk_usd / k.annual_margin_usd).toFixed(1)}% of annual gross margin</div></div>
+    <div class="card tile"><div class="label">Revenue at risk</div><div class="value">${usd(k.revenue_at_risk_usd)}</div></div>
+    <div class="card tile"><div class="label">Exposed suppliers</div><div class="value">${k.exposed_suppliers} of ${k.suppliers}</div></div>
+    <div class="card tile"><div class="label">Single-sourced inputs</div><div class="value">${k.single_sourced_inputs}</div></div>
+    <div class="card tile"><div class="label">Annual gross margin</div><div class="value">${usd(k.annual_margin_usd)}</div></div>`;
+
+  const top = d.risk_ranking.filter(r => r.lost_margin_usd > 0).slice(0, 10);
+  const max = Math.max(...top.map(r => r.lost_margin_usd));
+  $("bars").innerHTML = top.map((r, i) => `
+    <div class="bar-row" data-i="${i}">
+      <div class="bar-label">${esc(r.node_name)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(85 * r.lost_margin_usd / max).toFixed(1)}%"></div>
+        ${i < 3 ? `<span class="bar-value" style="left:${(85 * r.lost_margin_usd / max).toFixed(1)}%">${usd(r.lost_margin_usd)}</span>` : ""}</div>
+    </div>`).join("");
+  $("bars").querySelectorAll(".bar-row").forEach(row => {
+    const r = top[+row.dataset.i];
+    row.onmousemove = e => showTip(e, `<b>${esc(r.node_name)}</b> (${esc(r.node_id)})<br>${esc(r.disruption_profile)}<br>
+      Gross margin lost: <b>${usd(r.lost_margin_usd)}</b><br>TTR ${wk(r.recovery_weeks)} · TTS ${wk(r.time_to_survive_weeks)}<br>
+      <span class="muted">Hits: ${esc(r.impacted_products)}</span>`);
+    row.onmouseleave = hideTip;
+  });
+
+  $("named").innerHTML = `<tr><th>Scenario</th><th class="num">TTR</th><th class="num">TTS</th><th class="num">Margin lost</th></tr>` +
+    d.named_scenarios.map(s => `<tr><td>${esc(s.scenario_name)}<div class="muted">${esc(s.impacted_products || "no product impact")}</div></td>
+      <td class="num">${wk(s.recovery_weeks)}</td><td class="num">${wk(s.time_to_survive_weeks)}</td><td class="num">${usd(s.lost_margin_usd)}</td></tr>`).join("");
+
+  $("ranking").innerHTML = `<tr><th class="num">#</th><th>Supplier</th><th>Material</th><th>Disruption</th><th class="num">TTR</th>
+      <th class="num">TTS</th><th>Status</th><th class="num">Margin lost</th><th>Products hit</th></tr>` +
+    d.risk_ranking.map(r => {
+      const exposed = r.exposure_gap_weeks > 0 && r.lost_margin_usd > 0;
+      return `<tr><td class="num">${r.risk_rank}</td><td>${esc(r.node_name)} <span class="muted">${esc(r.node_id)} · Tier ${r.tier}</span></td>
+        <td>${esc(r.material_name)}</td><td>${esc(r.disruption_profile)}</td><td class="num">${wk(r.recovery_weeks)}</td>
+        <td class="num">${wk(r.time_to_survive_weeks)}</td>
+        <td>${exposed ? `<span class="pill critical">⚠ Exposed ${(+r.exposure_gap_weeks).toFixed(1)} wk</span>` : `<span class="pill good">✓ Covered</span>`}</td>
+        <td class="num">${usd(r.lost_margin_usd)}</td><td>${esc(r.impacted_products)}</td></tr>`; }).join("");
+
+  $("single").innerHTML = `<tr><th>Product</th><th>Material</th><th>Only supplier</th></tr>` +
+    d.single_sourced.map(s => `<tr><td>${esc(s.node_name)} <span class="muted">${esc(s.node_id)}</span></td><td>${esc(s.material_name)}</td><td>${esc(s.supplier_ids)}</td></tr>`).join("");
+}
+
+async function loadScenarios() {
+  const rows = await (await fetch("api/scenarios")).json();
+  $("scenarios").innerHTML = `<tr><th>When (UTC)</th><th>Scenario</th><th>Disrupted</th><th class="num">TTR</th><th class="num">TTS</th><th class="num">Margin lost</th></tr>` +
+    (rows.length ? rows.map(r => `<tr><td>${esc(r.created_at.slice(0, 16))}</td><td>${esc(r.scenario_name)}</td><td>${esc((r.disrupted_node_ids || []).join(", "))}</td>
+      <td class="num">${wk(r.recovery_weeks)}</td><td class="num">${wk(r.time_to_survive_weeks)}</td><td class="num">${usd(r.lost_margin_usd)}</td></tr>`).join("")
+      : `<tr><td colspan="6" class="muted">No what-if runs yet. Ask the agent about a disruption.</td></tr>`);
+}
+
+// ---- agent chat (server-sent events) ----
+const EXAMPLES = [
+  "Where is NorthBay most exposed? Give me the top 3 suppliers and what they put at risk.",
+  "Midwest Sweeteners (S207) had a refinery explosion and expects 9 weeks to recover. What happens and what should we do?",
+  "A hurricane takes out GulfCane Syrups, Gulf Coast Resins and Bayou Sugar Mill for 8 weeks. Impact?",
+  "Which finished goods depend on a single supplier for any input?",
+];
+const sessionId = crypto.randomUUID(), history = [];
+EXAMPLES.forEach(q => { const b = document.createElement("button"); b.type = "button"; b.textContent = q; b.onclick = () => ask(q); $("examples").appendChild(b); });
+function bubble(cls, html) { const d = document.createElement("div"); d.className = "msg " + cls; d.innerHTML = html; $("chat").appendChild(d); $("chat").scrollTop = 1e9; return d; }
+
+async function ask(q) {
+  q = q.trim(); if (!q || $("send").disabled) return;
+  $("input").value = ""; $("send").disabled = true;
+  bubble("user", esc(q)); history.push({role: "user", content: q});
+  const reply = bubble("assistant", '<span class="status">Thinking…</span>');
+  try {
+    const resp = await fetch("api/chat", {method: "POST", headers: {"Content-Type": "application/json"},
+                                          body: JSON.stringify({session_id: sessionId, messages: history})});
+    const reader = resp.body.getReader(), dec = new TextDecoder(); let buf = "", steps = [];
+    while (true) {
+      const {done, value} = await reader.read(); if (done) break;
+      buf += dec.decode(value, {stream: true}); let i;
+      while ((i = buf.indexOf("\n\n")) >= 0) {
+        const line = buf.slice(0, i); buf = buf.slice(i + 2);
+        if (!line.startsWith("data: ")) continue;
+        const ev = JSON.parse(line.slice(6));
+        if (ev.type === "status") { steps.push(ev.text); reply.innerHTML = steps.map(s => `<div class="status">${esc(s)}…</div>`).join(""); }
+        else if (ev.type === "answer") { reply.innerHTML = marked.parse(ev.text); history.push({role: "assistant", content: ev.text}); }
+        else if (ev.type === "error") { reply.innerHTML = `<span class="status">Error: ${esc(ev.text)}</span>`; history.pop(); }
+        $("chat").scrollTop = 1e9;
+      }
+    }
+  } catch (e) { reply.innerHTML = `<span class="status">Error: ${esc(String(e))}</span>`; history.pop(); }
+  $("send").disabled = false; $("input").focus();
+}
+$("form").onsubmit = e => { e.preventDefault(); ask($("input").value); };
+$("input").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask($("input").value); } });
+loadOverview().catch(e => $("kpis").innerHTML = `<div class="card">Could not load overview: ${esc(String(e))}</div>`);
+</script>
+</body>
+</html>
