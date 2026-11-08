@@ -30,24 +30,24 @@ which suppliers to dual-source, where to hold buffer). Deck: [`deck/northbay-res
 ```mermaid
 flowchart LR
   subgraph Sources["Source systems (synthetic extracts)"]
-    ERP[ERP plants] --- SRM[SRM suppliers] --- PLM[PLM links] --- WMS[WMS inventory] --- APS[APS forecast]
+    ERP["ERP plants"] --- SRM["SRM suppliers"] --- PLM["PLM links"] --- WMS["WMS inventory"] --- APS["APS forecast"]
   end
-  Sources -->|files| VOL[(UC Volume<br/>raw_landing)]
-  VOL -->|Auto Loader| LF[Lakeflow Declarative Pipeline<br/>bronze → silver (expectations) → gold]
-  LF --> GOLD[(Unity Catalog gold tables<br/>network, links, sourcing exposure)]
-  GOLD --> ST[Stress-test job<br/>Pyomo + HiGHS TTR/TTS models]
-  ST --> RES[(gold_stress_test_results<br/>gold_product_impact)]
-  GOLD --> SYNC
-  RES --> SYNC[Lakebase synced tables<br/>northbay_serving.*]
-  SYNC --> LB[(Lakebase Postgres<br/>+ app_state: scenario log, chat)]
-  GOLD --> GENIE[Genie space]
+  Sources -->|files| VOL[("UC Volume<br/>raw_landing")]
+  VOL -->|Auto Loader| LF["Lakeflow Declarative Pipeline<br/>bronze → silver with expectations → gold"]
+  LF --> GOLD[("Unity Catalog gold tables<br/>network, links, sourcing exposure")]
+  GOLD --> ST["Stress-test job<br/>Pyomo + HiGHS TTR/TTS models"]
+  ST --> RES[("gold_stress_test_results<br/>gold_product_impact")]
+  GOLD --> SYNC["Lakebase synced tables<br/>northbay_serving"]
+  RES --> SYNC
+  SYNC --> LB[("Lakebase Postgres<br/>+ app_state: scenario log, chat")]
+  GOLD --> GENIE["Genie space"]
   RES --> GENIE
-  LB --> AGENT[Resilience agent<br/>LangGraph + Claude Sonnet 5.5]
+  LB --> AGENT["Resilience agent<br/>LangGraph + Claude Sonnet 5.5"]
   GENIE -->|ask_genie tool| AGENT
   AGENT -->|what-if: optimizer| AGENT
-  AGENT --> APP[Databricks App<br/>Risk overview · Ask the agent · Scenario log]
+  AGENT --> APP["Databricks App<br/>Risk overview · Ask the agent · Scenario log"]
   LB --> APP
-  AGENT -.->|MLflow eval + UC registry| UC[(northbay_resilience_agent v1)]
+  AGENT -.->|MLflow eval + UC registry| UC[("northbay_resilience_agent v1")]
 ```
 
 | Stage | What it does here | Code | Evidence it ran |
