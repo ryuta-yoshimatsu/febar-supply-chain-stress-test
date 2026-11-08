@@ -16,7 +16,7 @@ Databricks · November 2026
   1. Qualify GulfCane Syrups as a second sweetener source for cereal and granola bars.
   2. Hold a 6-week seasoning buffer for Kettle Chips.
 - **≈ $0.8M/yr expected margin protected for ≈ $150k one-off + $36k/yr, so payback is under 3 months.**
-- Planners now answer multi-tier "what-ifs" in **~30 seconds instead of 1–2 weeks**.
+- Planners now answer multi-tier "what-ifs" in **under a minute instead of 1–2 weeks**.
 
 **Ask:** a 6-week pilot on NorthBay's real ERP / SRM data.
 
@@ -84,7 +84,7 @@ The intuitive option C fails because SpiceWorks has no spare capacity. The optim
 |---|---|---|
 | **VP Supply Chain** (sponsor) | Margin at risk becomes a managed number reviewed monthly | $11.5M → **$3.7M** margin at risk; largest single exposure $2.99M → $0.68M |
 | **Procurement** (owner) | A ranked, costed list of dual-sourcing and buffer decisions | Single-sourced inputs 11 → 9; next wave: packaging film & cartons |
-| **Supply planners** | Answer "what if X is down N weeks?" in the S&OP meeting | 1–2 weeks → **~30 seconds** |
+| **Supply planners** | Answer "what if X is down N weeks?" in the S&OP meeting | 1–2 weeks → **under a minute** |
 | **Finance** | Expected-loss view for risk reserves and insurance | ≈ **$0.8M/yr** expected margin protected, payback < 3 months |
 
 ---

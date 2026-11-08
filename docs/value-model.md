@@ -46,4 +46,4 @@ and $11.4M revenue** with today's sourcing; with plan A, Morning Oats Cereal and
 | VP Supply Chain | Largest single-supplier exposure | $2.99M (Midwest Sweeteners) → $0.68M (BarrierFilm Co.) (measured) |
 | Procurement Director (domain owner) | Single-sourced inputs to finished goods | 11 → 9 (measured); every plant still has at least one, so packaging is the next wave |
 | Procurement Director | Suppliers whose loss is unavoidable | 11 → 10 of 24 (measured): the plan shrinks the size of exposures more than their count |
-| Supply planner | Time to answer a multi-tier what-if | 1–2 weeks → ~30 seconds in the app (assumed baseline) |
+| Supply planner | Time to answer a multi-tier what-if | 1–2 weeks (assumed baseline) → under a minute in the app (47 s measured, see evidence/app_smoke_test.md) |

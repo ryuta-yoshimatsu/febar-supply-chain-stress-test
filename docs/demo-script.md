@@ -9,7 +9,7 @@ Procurement is the domain owner who acts on the output.
 > would cost or what to do. We modelled your whole network, 5 plants and 24 suppliers, and stress-tested every
 > supplier. **$11.5M of gross margin, 15% of the year, is exposed, and 71% of it sits with three suppliers.** Two
 > moves, a second sweetener source and a 6-week seasoning buffer, **cut that by 68%, for about $150k one-off.**
-> And your planners can now ask 'what if' in plain English and get an optimized answer in about 30 seconds."
+> And your planners can now ask 'what if' in plain English and get an optimized answer in under a minute."
 
 ## Show (8 min)
 

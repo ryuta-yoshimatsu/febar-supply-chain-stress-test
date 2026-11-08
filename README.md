@@ -16,7 +16,7 @@ spreadsheet exercise, so the answer arrives after the disruption has already cos
   margin protected for ≈ $150k one-off plus $36k/yr, so **payback is under 3 months** ([value model](docs/value-model.md)).
 * The "obvious" fix (dual-sourcing chips seasoning) is worth **1%**: the alternate has no spare capacity.
   The optimizer catches this; a spreadsheet would not.
-* Planners ask follow-ups in plain English in a Databricks App and get optimizer-backed answers in about 30 seconds,
+* Planners ask follow-ups in plain English in a Databricks App and get optimizer-backed answers in under a minute (47 s measured for a 3-supplier hurricane what-if),
   e.g. *"Midwest Sweeteners is down 9 weeks: what happens and what do we do?"* →
   $2.99M margin lost, 5.4 weeks of exposure, Morning Oats Cereal stops, plus re-allocation actions.
 
@@ -94,7 +94,7 @@ answers judged too light on numbers). Full per-question table in the executed no
 
 ```bash
 databricks bundle deploy -p <profile>                  # pipeline, job, Lakebase instance, app
-databricks bundle run northbay_end_to_end -p <profile> # ~12 min end to end on serverless
+databricks bundle run northbay_end_to_end -p <profile> # ~12 min on serverless (first run longer: Lakebase sync pipelines provision)
 databricks bundle run northbay_resilience -p <profile> # deploy the app code
 python tools/export_run_notebooks.py <profile> <run-id> evidence/executed_notebooks
 ```
